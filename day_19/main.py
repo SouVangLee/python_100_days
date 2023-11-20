@@ -42,7 +42,6 @@ def start_race():
         title="Make your bet", prompt="Which turtle will win the race? Enter a color: "
     )
     print(f"You bet: {turtle_chosen} turtle.")
-    global winner
     turtles = initialize_turtles()
     continue_race = True
     while continue_race:
@@ -53,13 +52,11 @@ def start_race():
             if is_winner(turtle):
                 continue_race = False
                 winner = turtle.color()[0]
-                index = len(turtles)
-                break
+                if turtle_chosen == winner:
+                    print(f"You win! The {winner} turtle is the winner!")
+                else:
+                    print(f"You lose! The {winner} turtle is the winner!")
             index += 1
-    if turtle_chosen == winner:
-        print(f"You win! The {winner} turtle is the winner!")
-    else:
-        print(f"You lose! The {winner} turtle is the winner!")
     return
 
 
