@@ -20,12 +20,14 @@ def random_color():
 
 def hirst_painting(dots_per_line=6, num_of_rows=10, space_between_rows=50, dot_size=25):
     screen.colormode(255)
-
+    turtle.penup()
+    turtle.setpos(-250, -250)
+    
     for row in range(0, num_of_rows):
         current_y_pos = turtle.ycor()
         if row > 0:
             current_y_pos += space_between_rows
-            turtle.setpos(0, current_y_pos)
+            turtle.setpos(-250, current_y_pos)
         turtle.pendown()
         for _ in range(0, dots_per_line):
             color = random_color()
@@ -35,4 +37,6 @@ def hirst_painting(dots_per_line=6, num_of_rows=10, space_between_rows=50, dot_s
 
 
 hirst_painting(6, 6, 50, 25)
+# turtle.dot(25, "red")
+
 screen.exitonclick()
