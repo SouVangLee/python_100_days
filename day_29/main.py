@@ -2,10 +2,64 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+import json
 
-LETTERS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-SYMBOLS = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+LETTERS = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+]
+NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+SYMBOLS = ["!", "#", "$", "%", "&", "(", ")", "*", "+"]
 
 WHITE = "#FFFFFF"
 
@@ -21,6 +75,7 @@ canvas.create_image(100, 100, image=img)
 canvas.grid(row=0, column=1)
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
 
 def password_generator():
     nr_letters = randint(8, 10)
@@ -38,6 +93,7 @@ def password_generator():
     password_input.insert(END, password)
     pyperclip.copy(password)
 
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -45,22 +101,44 @@ def save():
     website = website_input.get()
     email = email_or_username_input.get()
     password = password_input.get()
-    
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
+
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         messagebox.showinfo(title="Error", message="Please fill out all fields!")
     else:
-        is_ok = messagebox.askokcancel(
-            title=website,
-            message=f"These are the details entered: \nEmail: {email}"
-            f"\nPassword: {password} \nIs it ok to save?",
-        )
-    
+        # create a message box to verify data
+        # is_ok = messagebox.askokcancel(
+        #     title=website,
+        #     message=f"These are the details entered: \nEmail: {email}"
+        #     f"\nPassword: {password} \nIs it ok to save?",
+        # )
 
-        if is_ok:
-            with open("data.txt", "a") as data:
-                data.write(f"{website} | {email} | {password}\n")
-                website_input.delete(0, END)
-                password_input.delete(0, END)
+        # if is_ok:
+        # with open("data.txt", "a") as data:
+        # data.write(f"{website} | {email} | {password}\n")
+        # website_input.delete(0, END)
+        # password_input.delete(0, END)
+
+        with open("data.json", "r") as data_file:
+            # Read old data
+            data = json.load(data_file)
+
+            # Update old data with new data
+            data.update(new_data)
+            print(data)
+
+        with open("data.json", "w") as data_file:
+            # Write new data
+            json.dump(data, data_file, indent=4)
+
+            website_input.delete(0, END)
+            password_input.delete(0, END)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
